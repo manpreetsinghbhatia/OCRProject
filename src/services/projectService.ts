@@ -52,6 +52,10 @@ export default class ProjectService implements IProjectService {
             // Ensure tags is always initialized to an array
             if (!loadedProject.tags) {
                 loadedProject.tags = [];
+            } else {
+                const storageProvider = StorageProviderFactory.createFromConnection(loadedProject.sourceConnection);
+                await this.getTagsFromPreExistingLabelFiles(loadedProject, storageProvider);
+                await this.getTagsFromPreExistingFieldFile(loadedProject, storageProvider);
             }
 
             return Promise.resolve({ ...loadedProject });
